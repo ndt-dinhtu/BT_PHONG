@@ -3,7 +3,6 @@ import React, { useState, useMemo } from "react";
 // Thêm dòng này:
 import { dimsumProducts } from "../data.js";
 
-
 const formatPrice = (price) => {
   return price.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
 };
@@ -231,6 +230,40 @@ const ProductList = () => {
                 className="mt-4 text-red-600 font-bold underline"
               >
                 Xóa tất cả bộ lọc
+              </button>
+            </div>
+          )}
+
+          {/* Phân trang */}
+
+          {totalPages > 1 && (
+            <div className="flex justify-center items-center gap-2 mt-12">
+              <button
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((prev) => prev - 1)}
+                className="w-10 h-10 rounded-xl bg-white border border-gray-100 text-gray-400 disabled:opacity-30 hover:bg-gray-50 flex items-center justify-center transition shadow-sm"
+              >
+                &lsaquo;
+              </button>
+              {[...Array(totalPages)].map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrentPage(i + 1)}
+                  className={`w-10 h-10 rounded-xl font-bold text-sm transition-all ${
+                    currentPage === i + 1
+                      ? "bg-red-700 text-white shadow-md shadow-red-200"
+                      : "bg-white text-gray-500 border border-gray-100 hover:bg-gray-50"
+                  }`}
+                >
+                  {i + 1}
+                </button>
+              ))}
+              <button
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage((prev) => prev + 1)}
+                className="w-10 h-10 rounded-xl bg-white border border-gray-100 text-gray-400 disabled:opacity-30 hover:bg-gray-50 flex items-center justify-center transition shadow-sm"
+              >
+                &rsaquo;
               </button>
             </div>
           )}

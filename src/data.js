@@ -39,7 +39,7 @@ export const dimsumProducts = [
     category: "Sủi Cảo",
     img: "https://down-vn.img.susercontent.com/file/sg-11134201-22100-umm5iz9fizivdc.webp",
   },
-  // --- BẮT ĐẦU FAKE THÊM 10 MÓN ---
+
   {
     id: 6,
     name: "Chân Gà Tàu Xì",
