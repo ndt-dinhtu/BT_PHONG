@@ -7,12 +7,13 @@ import Navbar from "./component/Navbar.jsx";
 import Footer from "./component/Footer.jsx";
 import ProductList from "./component/ProductList.jsx";
 import ProductDetail from "./component/ProductDetail.jsx";
-import ScrollToTop from "./ScrollToTop.jsx"
+import ScrollToTop from "./ScrollToTop.jsx";
+import NotFound from "./component/NotFound.jsx";
 function App() {
   return (
     <>
       <Router>
-        <ScrollToTop />
+        {/* <ScrollToTop />
         <Navbar />
         <Routes>
           <Route path="/" element={<QKitchenHome />} />
@@ -21,7 +22,11 @@ function App() {
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
-        <Footer />
+        <Footer /> */}
+        <Routes>
+          <Route path="/" element={<NotFound />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </Router>
     </>
   );
