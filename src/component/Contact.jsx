@@ -50,7 +50,7 @@ const Contact = () => {
                       Địa chỉ trụ sở
                     </p>
                     <p className="text-gray-500 text-sm">
-                      123 Đường Dimsum, Phường Bến Nghé, Quận 1, TP. HCM
+                      01 Phan Xích Long, Phú Nhuận, TP. Hồ Chí Minh
                     </p>
                   </div>
                 </div>
@@ -78,7 +78,7 @@ const Contact = () => {
                       Email hỗ trợ
                     </p>
                     <p className="text-gray-500 text-sm font-medium">
-                      support@qkitchen.vn
+                      phanthanhphong01@gmail.com
                     </p>
                   </div>
                 </div>

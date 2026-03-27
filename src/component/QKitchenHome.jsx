@@ -1,37 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../public/logo.png";
-
-const ProductCard = ({ name, description, price, img, isPromo = false }) => (
-  <div className="bg-white p-5 shadow-sm border border-gray-100 flex flex-col items-center group hover:shadow-md transition-shadow relative overflow-hidden">
-    {isPromo && (
-      <div className="absolute top-0 left-0 bg-red-600 text-white text-[10px] font-bold px-3 py-1 uppercase">
-        Combo Tiết Kiệm
+import { useNavigate } from "react-router-dom";
+const ProductCard = ({
+  id,
+  name,
+  description,
+  price,
+  img,
+  isPromo = false,
+}) => {
+  const navigate = useNavigate();
+  return (
+    <div className="bg-white p-5 shadow-sm border border-gray-100 flex flex-col items-center group hover:shadow-md transition-shadow relative overflow-hidden">
+      {isPromo && (
+        <div className="absolute top-0 left-0 bg-red-600 text-white text-[10px] font-bold px-3 py-1 uppercase">
+          Combo Tiết Kiệm
+        </div>
+      )}
+      <div className="w-full h-44 overflow-hidden mb-4">
+        <img
+          src={img}
+          alt={name}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
       </div>
-    )}
-    <div className="w-full h-44 overflow-hidden mb-4">
-      <img
-        src={img}
-        alt={name}
-        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-      />
+      <h3 className="text-[#a51c1c] font-black text-xl mb-1">{name}</h3>
+      <p className="text-gray-500 text-[13px] text-center mb-3 leading-tight">
+        {description}
+      </p>
+      <p className="text-sm font-medium text-gray-800 mb-4">
+        Giá: <span className="font-bold text-[#a51c1c]">{price}</span> / Phần
+      </p>
+      <button
+        onClick={() => navigate(`/product/${id}`)} // Điều hướng tới id của sản phẩm
+        className="bg-[#e22d2d] cursor-pointer text-white px-10 py-2 text-xs font-black rounded-sm shadow-[0_4px_0_rgb(165,28,28)] active:translate-y-[2px] active:shadow-none transition-all uppercase tracking-tighter"
+      >
+        ĐẶT HÀNG
+      </button>
     </div>
-    <h3 className="text-[#a51c1c] font-black text-xl mb-1">{name}</h3>
-    <p className="text-gray-500 text-[13px] text-center mb-3 leading-tight">
-      {description}
-    </p>
-    <p className="text-sm font-medium text-gray-800 mb-4">
-      Giá: <span className="font-bold text-[#a51c1c]">{price}</span> / Phần
-    </p>
-    <button className="bg-[#e22d2d] cursor-pointer text-white px-10 py-2 text-xs font-black rounded-sm shadow-[0_4px_0_rgb(165,28,28)] active:translate-y-[2px] active:shadow-none transition-all uppercase tracking-tighter">
-      ĐẶT HÀNG
-    </button>
-  </div>
-);
+  );
+};
 
 const QKitchenHome = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-
+  const [isPaused, setIsPaused] = useState(false);
+  const maxIndex = 5 - 3;
   const nextSlide = () => {
     if (currentIndex < products.length - 3) {
       setCurrentIndex((prev) => prev + 1);
@@ -43,6 +57,16 @@ const QKitchenHome = () => {
       setCurrentIndex((prev) => prev - 1);
     }
   };
+
+  useEffect(() => {
+    if (isPaused) return;
+
+    const timer = setInterval(() => {
+      nextSlide();
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [currentIndex, isPaused]);
 
   const products = [
     {
@@ -178,22 +202,25 @@ const QKitchenHome = () => {
           </div>
         </div>
 
-        {/* --- SECTION 2: SẢN PHẨM CỦA CHÚNG TÔI (SMOOTH SLIDER) --- */}
+        {/* --- SECTION 2: SẢN PHẨM (AUTO-PLAY SLIDER) --- */}
         <section className="relative overflow-visible">
           <div className="flex items-center justify-center gap-4 mb-10">
             <div className="h-[1px] bg-gray-300 w-12 md:w-24"></div>
             <h2 className="text-[#a51c1c] text-2xl font-black uppercase tracking-[0.2em] text-center">
-              Sản phẩm nổi bật của chúng tôi
+              Sản phẩm của chúng tôi
             </h2>
             <div className="h-[1px] bg-gray-300 w-12 md:w-24"></div>
           </div>
 
-          <div className="relative group max-w-5xl mx-auto">
+          <div
+            className="relative group max-w-5xl mx-auto"
+            onMouseEnter={() => setIsPaused(true)} // Di chuột vào: Dừng
+            onMouseLeave={() => setIsPaused(false)} // Di chuột ra: Chạy tiếp
+          >
             {/* Nút TRÁI */}
             <button
               onClick={prevSlide}
-              className={`absolute cursor-pointer left-[-30px] md:left-[-60px] top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full flex items-center justify-center transition-all shadow-xl bg-white border-2 border-[#a51c1c] text-[#a51c1c] active:scale-90
-                ${currentIndex === 0 ? "opacity-0 invisible" : "opacity-100 visible hover:bg-[#a51c1c] hover:text-white"}`}
+              className="absolute left-[-30px] md:left-[-60px] top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full flex items-center justify-center transition-all shadow-xl bg-white border-2 border-[#a51c1c] text-[#a51c1c] hover:bg-[#a51c1c] hover:text-white active:scale-90"
             >
               <svg
                 className="w-6 h-6"
@@ -213,9 +240,8 @@ const QKitchenHome = () => {
             {/* KHUNG NHÌN (VIEWPORT) */}
             <div className="overflow-hidden px-2">
               <div
-                className="flex transition-transform duration-700 ease-in-out" // Cốt lõi của hiệu ứng trượt từ từ
+                className="flex transition-transform duration-1000 ease-in-out" // Tăng duration lên 1000 (1s) cho mượt hơn nữa
                 style={{
-                  // Dịch chuyển 33.33% cho mỗi index (vì hiển thị 3 cột)
                   transform: `translateX(-${currentIndex * (100 / 3)}%)`,
                 }}
               >
@@ -233,8 +259,7 @@ const QKitchenHome = () => {
             {/* Nút PHẢI */}
             <button
               onClick={nextSlide}
-              className={`absolute cursor-pointer right-[-30px] md:right-[-60px] top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full flex items-center justify-center transition-all shadow-xl bg-white border-2 border-[#a51c1c] text-[#a51c1c] active:scale-90
-                ${currentIndex >= products.length - 3 ? "opacity-0 invisible" : "opacity-100 visible hover:bg-[#a51c1c] hover:text-white"}`}
+              className="absolute right-[-30px] md:right-[-60px] top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full flex items-center justify-center transition-all shadow-xl bg-white border-2 border-[#a51c1c] text-[#a51c1c] hover:bg-[#a51c1c] hover:text-white active:scale-90"
             >
               <svg
                 className="w-6 h-6"
@@ -252,7 +277,17 @@ const QKitchenHome = () => {
             </button>
           </div>
 
-          {/* Nút xem tất cả (Giữ nguyên) */}
+          {/* INDICATORS (Các dấu chấm nhỏ ở dưới Slider) */}
+          <div className="flex justify-center gap-2 mt-6">
+            {[0, 1, 2].map((i) => (
+              <div
+                key={i}
+                className={`h-2 rounded-full transition-all duration-300 ${currentIndex === i ? "w-8 bg-[#a51c1c]" : "w-2 bg-gray-300"}`}
+              ></div>
+            ))}
+          </div>
+
+          {/* Nút xem tất cả */}
           <div className="flex justify-center mt-12">
             <Link
               to="/product"

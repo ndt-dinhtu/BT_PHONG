@@ -67,6 +67,8 @@ const ProductList = () => {
     setCurrentPage(1);
   };
 
+
+
   return (
     <div className="bg-[#f8f9fa] min-h-screen pt-24 pb-16 px-4 md:px-8">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-8">
