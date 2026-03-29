@@ -13,7 +13,7 @@ function App() {
   return (
     <>
       <Router>
-        {/* <ScrollToTop />
+        <ScrollToTop />
         <Navbar />
         <Routes>
           <Route path="/" element={<QKitchenHome />} />
@@ -21,12 +21,10 @@ function App() {
           <Route path="/product" element={<ProductList />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/contact" element={<Contact />} />
-        </Routes>
-        <Footer /> */}
-        <Routes>
-          <Route path="/" element={<NotFound />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <Footer />
+       
       </Router>
     </>
   );
