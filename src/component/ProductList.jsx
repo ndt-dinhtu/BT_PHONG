@@ -1,43 +1,44 @@
 import { Link } from "react-router-dom";
 import React, { useState, useMemo } from "react";
-// Thêm dòng này:
 import { dimsumProducts } from "../data.js";
+// 1. Import thêm hook để sử dụng Context giỏ hàng
+import { useCart } from "../context/CartContext";
 
 const formatPrice = (price) => {
   return price.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
 };
 
 const ProductList = () => {
-  // 1. STATES
-  const [searchTerm, setSearchTerm] = useState(""); // Tìm kiếm
+  // 2. Lấy hàm addToCart từ Context
+  const { addToCart } = useCart();
+
+  // --- GIỮ NGUYÊN CÁC STATES CŨ ---
+  const [searchTerm, setSearchTerm] = useState(""); 
   const [activeCategory, setActiveCategory] = useState("Tất cả");
-  const [priceRange, setPriceRange] = useState("all"); // Lọc khoảng giá
+  const [priceRange, setPriceRange] = useState("all"); 
   const [sortOrder, setSortOrder] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
 
-  // 2. LOGIC LẤY DANH MỤC
+  // --- GIỮ NGUYÊN LOGIC LẤY DANH MỤC ---
   const categories = useMemo(() => {
     return ["Tất cả", ...new Set(dimsumProducts.map((p) => p.category))];
   }, []);
 
-  // 3. LOGIC LỌC TỔNG HỢP (Tìm kiếm + Danh mục + Giá + Sắp xếp)
+  // --- GIỮ NGUYÊN LOGIC LỌC TỔNG HỢP ---
   const filteredProducts = useMemo(() => {
     let result = [...dimsumProducts];
 
-    // Lọc theo tên (Search)
     if (searchTerm) {
       result = result.filter((p) =>
         p.name.toLowerCase().includes(searchTerm.toLowerCase()),
       );
     }
 
-    // Lọc theo danh mục
     if (activeCategory !== "Tất cả") {
       result = result.filter((p) => p.category === activeCategory);
     }
 
-    // Lọc theo khoảng giá
     if (priceRange === "under50")
       result = result.filter((p) => p.price < 50000);
     if (priceRange === "50to100")
@@ -45,21 +46,19 @@ const ProductList = () => {
     if (priceRange === "over100")
       result = result.filter((p) => p.price > 100000);
 
-    // Sắp xếp
     if (sortOrder === "asc") result.sort((a, b) => a.price - b.price);
     if (sortOrder === "desc") result.sort((a, b) => b.price - a.price);
 
     return result;
   }, [searchTerm, activeCategory, priceRange, sortOrder]);
 
-  // 4. PHÂN TRANG
+  // --- GIỮ NGUYÊN PHÂN TRANG ---
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
   const currentItems = filteredProducts.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage,
   );
 
-  // Reset trang khi lọc
   const handleFilterReset = (type, value) => {
     if (type === "cat") setActiveCategory(value);
     if (type === "price") setPriceRange(value);
@@ -67,14 +66,11 @@ const ProductList = () => {
     setCurrentPage(1);
   };
 
-
-
   return (
     <div className="bg-[#f8f9fa] min-h-screen pt-24 pb-16 px-4 md:px-8">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-8">
-        {/* --- SIDEBAR BÊN TRÁI --- */}
+        {/* --- SIDEBAR BÊN TRÁI (Giữ nguyên) --- */}
         <aside className="w-full md:w-64 flex-shrink-0 space-y-6">
-          {/* Box Danh Mục */}
           <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
             <h3 className="text-sm font-black text-gray-800 mb-4 uppercase tracking-widest border-b pb-2">
               Danh Mục
@@ -92,18 +88,15 @@ const ProductList = () => {
                 >
                   <span>{cat}</span>
                   <span className="text-[10px] opacity-50">
-                    {
-                      dimsumProducts.filter((p) =>
+                    {dimsumProducts.filter((p) =>
                         cat === "Tất cả" ? true : p.category === cat,
-                      ).length
-                    }
+                      ).length}
                   </span>
                 </button>
               ))}
             </nav>
           </div>
 
-          {/* Box Lọc Khoảng Giá */}
           <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
             <h3 className="text-sm font-black text-gray-800 mb-4 uppercase tracking-widest border-b pb-2">
               Khoảng Giá
@@ -139,10 +132,9 @@ const ProductList = () => {
 
         {/* --- KHU VỰC CHÍNH BÊN PHẢI --- */}
         <main className="flex-1">
-          {/* Thanh Tìm Kiếm & Sắp Xếp */}
+          {/* Thanh Tìm Kiếm & Sắp Xếp (Giữ nguyên) */}
           <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 mb-6 space-y-4">
             <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
-              {/* Search Bar */}
               <div className="relative w-full md:w-96">
                 <input
                   type="text"
@@ -151,22 +143,11 @@ const ProductList = () => {
                   onChange={(e) => handleFilterReset("search", e.target.value)}
                   className="w-full pl-11 pr-4 py-2.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-red-500 outline-none transition-all text-sm"
                 />
-                <svg
-                  className="w-5 h-5 absolute left-4 top-3 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
+                <svg className="w-5 h-5 absolute left-4 top-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
 
-              {/* Sort Buttons */}
               <div className="flex bg-gray-50 p-1 rounded-xl w-full md:w-auto">
                 {["asc", "desc"].map((order) => (
                   <button
@@ -189,10 +170,7 @@ const ProductList = () => {
                   key={product.id}
                   className="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all group"
                 >
-                  <Link
-                    to={`/product/${product.id}`}
-                    className="block h-44 overflow-hidden relative"
-                  >
+                  <Link to={`/product/${product.id}`} className="block h-44 overflow-hidden relative">
                     <img
                       src={product.img}
                       alt={product.name}
@@ -210,7 +188,11 @@ const ProductList = () => {
                       <span className="text-lg font-black text-red-600">
                         {product.price.toLocaleString()}đ
                       </span>
-                      <button className="bg-red-700 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-black transition shadow-lg shadow-red-100">
+                      {/* 3. Cập nhật nút bấm: Gọi hàm addToCart */}
+                      <button 
+                        onClick={() => addToCart(product, 1)}
+                        className="bg-red-700 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-black transition shadow-lg shadow-red-100 active:scale-95"
+                      >
                         THÊM +
                       </button>
                     </div>
@@ -219,10 +201,9 @@ const ProductList = () => {
               ))}
             </div>
           ) : (
-            <div className="py-20 text-center">
-              <p className="text-gray-400">
-                Không tìm thấy món ăn phù hợp với yêu cầu của bạn 🥡
-              </p>
+            <div className="py-20 text-center text-gray-400">
+              Không tìm thấy món ăn phù hợp với yêu cầu của bạn 🥡
+              <br />
               <button
                 onClick={() => {
                   setSearchTerm("");
@@ -236,8 +217,7 @@ const ProductList = () => {
             </div>
           )}
 
-          {/* Phân trang */}
-
+          {/* Phân trang (Giữ nguyên) */}
           {totalPages > 1 && (
             <div className="flex justify-center items-center gap-2 mt-12">
               <button
@@ -269,9 +249,6 @@ const ProductList = () => {
               </button>
             </div>
           )}
-
-          {/* Phân trang (Giống bản trước) */}
-          {/* ... (Phần Pagination giữ nguyên như code cũ) */}
         </main>
       </div>
     </div>

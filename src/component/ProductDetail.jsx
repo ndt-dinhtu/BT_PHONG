@@ -1,18 +1,28 @@
 import React, { useState, useMemo } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { dimsumProducts } from "../data.js";
+// 1. IMPORT Context giỏ hàng
+import { useCart } from "../context/CartContext";
+
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  
+  // 2. LẤY hàm addToCart từ Context
+  const { addToCart } = useCart();
+
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
+  
+  // Thêm một state nhỏ để tạo hiệu ứng thông báo khi thêm thành công (tùy chọn)
+  const [addedSuccess, setAddedSuccess] = useState(false);
 
-  // 1. Tìm sản phẩm dựa trên ID từ URL
+  // 1. Tìm sản phẩm dựa trên ID từ URL (Giữ nguyên)
   const product = useMemo(() => {
     return dimsumProducts.find((p) => p.id === parseInt(id));
   }, [id]);
 
-  // Nếu không tìm thấy sản phẩm
+  // Nếu không tìm thấy sản phẩm (Giữ nguyên)
   if (!product) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#fdf8f2]">
@@ -29,20 +39,29 @@ const ProductDetail = () => {
     );
   }
 
-  // 2. Các hàm xử lý số lượng
+  // 2. Các hàm xử lý số lượng (Giữ nguyên)
   const increaseQty = () => setQuantity((prev) => prev + 1);
   const decreaseQty = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
 
+  // 3. Hàm xử lý thêm vào giỏ hàng
+  const handleAddToCart = () => {
+    addToCart(product, quantity);
+    
+    // Hiệu ứng phản hồi cho người dùng
+    setAddedSuccess(true);
+    setTimeout(() => setAddedSuccess(false), 2000);
+  };
+
   return (
-    <div className="bg-[#fdf8f2] min-h-screen pt-28 pb-16 px-4">
+    <div className="bg-[#fdf8f2] min-h-screen pt-28 pb-16 px-4 font-sans">
       <div className="max-w-6xl mx-auto">
-        {/* Nút Quay lại & Breadcrumb */}
+        {/* Nút Quay lại & Breadcrumb (Giữ nguyên) */}
         <div className="flex items-center space-x-2 text-sm text-gray-500 mb-8">
-          <Link to="/" className="hover:text-red-700">
+          <Link to="/" className="hover:text-red-700 transition-colors">
             Trang chủ
           </Link>
           <span>/</span>
-          <Link to="/product" className="hover:text-red-700">
+          <Link to="/product" className="hover:text-red-700 transition-colors">
             Sản phẩm
           </Link>
           <span>/</span>
@@ -50,7 +69,7 @@ const ProductDetail = () => {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-12 bg-white rounded-[40px] p-6 lg:p-12 shadow-xl border border-white">
-          {/* --- BÊN TRÁI: HÌNH ẢNH --- */}
+          {/* --- BÊN TRÁI: HÌNH ẢNH (Giữ nguyên) --- */}
           <div className="w-full lg:w-1/2 group">
             <div className="relative overflow-hidden rounded-[30px] aspect-square shadow-inner bg-gray-50">
               <img
@@ -66,7 +85,7 @@ const ProductDetail = () => {
 
           {/* --- BÊN PHẢI: THÔNG TIN ĐẶT HÀNG --- */}
           <div className="w-full lg:w-1/2 flex flex-col">
-            <h1 className="text-4xl lg:text-5xl font-black text-gray-900 leading-tight mb-4">
+            <h1 className="text-4xl lg:text-5xl font-black text-gray-900 leading-tight mb-4 uppercase tracking-tighter">
               {product.name}
             </h1>
 
@@ -79,7 +98,7 @@ const ProductDetail = () => {
               </span>
             </div>
 
-            <p className="text-gray-600 leading-relaxed mb-8 text-lg italic">
+            <p className="text-gray-600 leading-relaxed mb-8 text-lg italic border-l-4 border-red-50 pl-4">
               "{product.description}"
             </p>
 
@@ -104,22 +123,30 @@ const ProductDetail = () => {
                   </button>
                 </div>
 
-                <button className="flex-1 w-full bg-red-700 hover:bg-black text-white py-4 rounded-2xl font-black text-lg transition-all transform active:scale-95 shadow-xl shadow-red-100 uppercase tracking-tighter">
-                  Thêm vào giỏ - {(product.price * quantity).toLocaleString()}đ
+                {/* CẬP NHẬT: Nút bấm gọi hàm handleAddToCart */}
+                <button 
+                  onClick={handleAddToCart}
+                  className={`flex-1 w-full py-4 rounded-2xl font-black text-lg transition-all transform active:scale-95 shadow-xl uppercase tracking-tighter ${
+                    addedSuccess 
+                    ? "bg-green-600 text-white shadow-green-100" 
+                    : "bg-red-700 hover:bg-black text-white shadow-red-100"
+                  }`}
+                >
+                  {addedSuccess ? "✓ Đã thêm món!" : `Thêm vào giỏ - ${(product.price * quantity).toLocaleString()}đ`}
                 </button>
               </div>
 
-              {/* Cam kết của nhà hàng */}
+              {/* Cam kết của nhà hàng (Giữ nguyên) */}
               <div className="grid grid-cols-2 gap-4 pt-6 border-t border-gray-100">
                 <div className="flex items-center space-x-3">
-                  <span className="text-2xl">🔥</span>
-                  <span className="text-xs font-bold text-gray-500">
+                  <span className="text-2xl text-red-500">🔥</span>
+                  <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">
                     Giao nóng 30p
                   </span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <span className="text-2xl">🌿</span>
-                  <span className="text-xs font-bold text-gray-500">
+                  <span className="text-2xl text-green-500">🌿</span>
+                  <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">
                     Nguyên liệu sạch
                   </span>
                 </div>
@@ -128,7 +155,7 @@ const ProductDetail = () => {
           </div>
         </div>
 
-        {/* --- TABS THÔNG TIN CHI TIẾT --- */}
+        {/* --- TABS THÔNG TIN CHI TIẾT (Giữ nguyên) --- */}
         <div className="mt-12 bg-white rounded-[30px] p-8 shadow-sm border border-gray-50">
           <div className="flex space-x-8 border-b border-gray-100 mb-8">
             <button
@@ -153,33 +180,26 @@ const ProductDetail = () => {
                   biến theo công thức gia truyền với lớp vỏ bột mỏng nhưng dai
                   mịn, bao bọc phần nhân tươi ngon đậm đà.
                 </p>
-                <ul className="list-disc pl-5 space-y-2">
-                  <li>
-                    Thành phần chính: Thịt tươi, gia vị Hong Kong, tôm nõn (tùy
-                    loại).
-                  </li>
-                  <li>Không sử dụng phẩm màu hóa học.</li>
-                  <li>
-                    Sản phẩm được đóng gói trong hộp giấy thân thiện với môi
-                    trường.
-                  </li>
+                <ul className="list-disc pl-5 space-y-2 text-sm">
+                  <li>Thành phần: Nguyên liệu tuyển chọn, gia vị Hong Kong.</li>
+                  <li>Sản xuất sạch, không chất bảo quản.</li>
+                  <li>Đóng gói giữ nhiệt chuyên dụng.</li>
                 </ul>
               </div>
             ) : (
-              <p>
-                Chúng tôi hỗ trợ giao hàng trong bán kính 10km quanh khu vực
-                TP.HCM. Cam kết giao hàng nóng hổi trong 30-45 phút tùy mật độ
-                giao thông. Nếu sản phẩm bị nguội hoặc biến dạng do vận chuyển,
-                hãy liên hệ Hotline để được đổi mới miễn phí.
+              <p className="text-sm">
+                Chúng tôi hỗ trợ giao hàng nhanh trong 30-45 phút tại khu vực nội thành. 
+                Sản phẩm là thực phẩm chế biến sẵn, vui lòng kiểm tra kỹ khi nhận hàng. 
+                Nếu có vấn đề về chất lượng, Q-Kitchen cam kết đổi trả ngay lập tức.
               </p>
             )}
           </div>
         </div>
 
-        {/* --- PHẦN MÓN ĂN GỢI Ý --- */}
+        {/* --- PHẦN MÓN ĂN GỢI Ý (Giữ nguyên) --- */}
         <div className="mt-20">
-          <h2 className="text-2xl font-black text-gray-800 mb-8 uppercase">
-            Bạn cũng sẽ thích
+          <h2 className="text-2xl font-black text-gray-800 mb-8 uppercase tracking-tighter">
+            Có thể bạn cũng thích
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {dimsumProducts
@@ -193,16 +213,16 @@ const ProductDetail = () => {
                   to={`/product/${item.id}`}
                   className="group"
                 >
-                  <div className="bg-white p-4 rounded-3xl border border-gray-100 hover:shadow-lg transition">
+                  <div className="bg-white p-4 rounded-3xl border border-gray-100 hover:shadow-xl transition-all duration-300">
                     <img
                       src={item.img}
                       alt={item.name}
-                      className="w-full h-32 object-cover rounded-2xl mb-4"
+                      className="w-full h-32 object-cover rounded-2xl mb-4 group-hover:scale-105 transition-transform"
                     />
-                    <h4 className="font-bold text-gray-800 text-sm truncate">
+                    <h4 className="font-bold text-gray-800 text-sm truncate uppercase tracking-tighter">
                       {item.name}
                     </h4>
-                    <p className="text-red-600 font-bold mt-1">
+                    <p className="text-red-600 font-bold mt-1 text-sm">
                       {item.price.toLocaleString()}đ
                     </p>
                   </div>

@@ -9,6 +9,8 @@ import ProductList from "./component/ProductList.jsx";
 import ProductDetail from "./component/ProductDetail.jsx";
 import ScrollToTop from "./ScrollToTop.jsx";
 import NotFound from "./component/NotFound.jsx";
+import Cart from "./component/Cart.jsx";
+import Checkout from "./component/Checkout.jsx";
 function App() {
   return (
     <>
@@ -21,10 +23,11 @@ function App() {
           <Route path="/product" element={<ProductList />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
-       
       </Router>
     </>
   );

@@ -13,7 +13,7 @@ const Contact = () => {
     e.preventDefault();
     // Giả lập gửi form
     setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 5000);
+    setTimeout(() => setSubmitted(false), 10000);
   };
 
   return (
@@ -92,7 +92,9 @@ const Contact = () => {
                 <div className="flex space-x-3">
                   {/* Facebook */}
                   <a
-                    href="#"
+                    href="https://facebook.com"
+                    target="_blank" // Mở tab mới
+                    rel="noopener noreferrer" // Bảo mật
                     className="w-11 h-11 bg-gray-50 flex items-center justify-center rounded-xl text-gray-600 hover:bg-[#1877F2] hover:text-white transition-all duration-300 border border-gray-100 shadow-sm group"
                   >
                     <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
@@ -102,7 +104,9 @@ const Contact = () => {
 
                   {/* Instagram */}
                   <a
-                    href="#"
+                    href="https://instagram.com"
+                    target="_blank" // Mở tab mới
+                    rel="noopener noreferrer" // Bảo mật
                     className="w-11 h-11 bg-gray-50 flex items-center justify-center rounded-xl text-gray-600 hover:bg-gradient-to-tr hover:from-[#f9ce34] hover:via-[#ee2a7b] hover:to-[#6228d7] hover:text-white transition-all duration-300 border border-gray-100 shadow-sm group"
                   >
                     <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
@@ -112,7 +116,9 @@ const Contact = () => {
 
                   {/* TikTok */}
                   <a
-                    href="#"
+                    href="https://tiktok.com"
+                    target="_blank" // Mở tab mới
+                    rel="noopener noreferrer" // Bảo mật
                     className="w-11 h-11 bg-gray-50 flex items-center justify-center rounded-xl text-gray-600 hover:bg-black hover:text-white transition-all duration-300 border border-gray-100 shadow-sm group"
                   >
                     <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
