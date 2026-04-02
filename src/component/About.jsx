@@ -24,7 +24,7 @@ const About = () => {
           <div className="relative">
             <div className="absolute -top-4 -left-4 w-full h-full border-2 border-red-700 rounded-[40px] z-0"></div>
             <img
-              src="https://mayviendong.vn/wp-content/uploads/2019/07/c%C3%A1ch-ph%C3%A2n-khu-b%E1%BA%BFp-nh%C3%A0-h%C3%A0ng41-1.png"
+              src="/about.jpg"
               alt="Dimsum Chef"
               className="relative z-10 rounded-[40px] shadow-2xl grayscale hover:grayscale-0 transition-all duration-700"
             />
@@ -157,8 +157,8 @@ const About = () => {
             </h2>
             <div className="space-y-4 text-sm opacity-90 font-medium">
               <p className="flex items-center">
-                <span className="mr-3">📍</span> 123 Đường Dimsum, Quận 1, TP.
-                Hồ Chí Minh
+                <span className="mr-3">📍</span> 01 Phan Xích Long, Phú Nhuận,
+                TP. Hồ Chí Minh
               </p>
               <p className="flex items-center">
                 <span className="mr-3">📞</span> Hotline: 090 123 4567
@@ -168,19 +168,30 @@ const About = () => {
                 ngày)
               </p>
               <p className="flex items-center">
-                <span className="mr-3">📧</span> Email: hello@qkitchen.vn
+                <span className="mr-3">📧</span> Email:
+                phanthanhphong01@gmail.com
               </p>
             </div>
-            <button className="mt-8 bg-white text-red-700 px-8 py-3 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-black hover:text-white transition shadow-2xl">
-              Chỉ đường ngay
-            </button>
+            <a
+              href="https://www.google.com/maps/place/01+Phan+X%C3%ADch+Long,+Ph%C6%B0%E1%BB%9Dng+4,+%C4%90%E1%BB%A9c+Nhu%E1%BA%ADn,+H%E1%BB%93+Ch%C3%AD+Minh,+Vietnam/@10.801849,106.6802141,17z/data=!3m1!4b1!4m6!3m5!1s0x317528da1af7faf9:0x6b39e23613e77d4c!8m2!3d10.801849!4d106.682789!16s%2Fg%2F11x6xskt76?entry=ttu&g_ep=EgoyMDI2MDMzMC4wIKXMDSoASAFQAw%3D%3D"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block"
+            >
+              <button className="mt-8 bg-white text-red-700 px-8 py-3 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-black hover:text-white transition shadow-2xl">
+                Chỉ đường ngay
+              </button>
+            </a>
           </div>
           <div className="h-[400px] bg-gray-200 rounded-[40px] overflow-hidden shadow-inner relative">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.4852377038144!2d106.697664675703!3d10.774092159235002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f474364e33d%3A0x2214271424619c01!2zRElNU1VNIFRI4buKSCBZSSAtIEhBIEPhuqBPIFRI4buKSCBZSQ!5e0!3m2!1svi!2svn!4v1715000000000!5m2!1svi!2svn"
-              className="w-full h-full border-0 grayscale invert-[0.1]"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15676.005404182988!2d106.6687477992401!3d10.811207729433212!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317528da1af7faf9%3A0x6b39e23613e77d4c!2zMDEgUGhhbiBYw61jaCBMb25nLCBQaMaw4budbmcgNCwgxJDhu6ljIE5odeG6rW4sIEjhu5MgQ2jDrSBNaW5oLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1775112934196!5m2!1svi!2s"
+              width="600"
+              height="450"
+              style={{ border: 0 }}
               allowFullScreen=""
               loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
             ></iframe>
           </div>
         </div>
