@@ -118,7 +118,7 @@ const Footer = () => {
           <div className="space-y-3 text-gray-400 text-sm mb-8">
             <p className="flex items-center gap-2">
               <span className="text-[#f3b340]">✉</span>{" "}
-              phanthanhphong01@gmail.com
+              Q_Chicken@gmail.com
             </p>
             <p className="flex items-center gap-2">
               <span className="text-[#f3b340]">📍</span> 01 Phan Xích Long, Phú

@@ -78,7 +78,7 @@ const Contact = () => {
                       Email hỗ trợ
                     </p>
                     <p className="text-gray-500 text-sm font-medium">
-                      phanthanhphong01@gmail.com
+                           Q_Chicken@gmail.com
                     </p>
                   </div>
                 </div>
